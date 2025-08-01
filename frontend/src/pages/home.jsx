@@ -8,7 +8,7 @@ import MovieCard from '../components/moviecard.jsx'
 function Home() {
     return (
         <Container disableGutters maxWidth="false">
-            <Headers />
+            <Headers page="home" />
             <MovieCarousel />
             <Typography variant="h4" sx={{ color: 'white', fontWeight: 'bold', marginTop: '40px', marginLeft: '24px' }}>
                 Recommended Movies
