@@ -57,6 +57,22 @@ function SearchMovie() {
         setCompletedDate(event.target.value);
     }
 
+    const addMovie = () => {
+        const finalData = {
+            "title": query,
+            "director": director,
+            "media_type": mediaType,
+            "genre": genre,
+            "rating": rating,
+            "review": reviewText,
+            "completed_date": completedDate,
+            "status": selectedStatus,
+            "bgImg": selectedMovie.backdrop_path || "",
+            "posterImg": selectedMovie.poster_path || ""
+        }
+        console.log(finalData)
+    }
+
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (containerRef.current && !containerRef.current.contains(event.target)) {
@@ -413,17 +429,19 @@ function SearchMovie() {
                         />
                     </>
                 )}
-                <Box sx={{
-                    mt: 3,
-                    bgcolor: 'primary.main',
-                    width: '80%',
-                    padding: '10px',
-                    textAlign: 'center',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    boxSizing: 'border-box',
-                    marginBottom: '20px',
-                }}>
+                <Box
+                    onClick={addMovie}
+                    sx={{
+                        mt: 3,
+                        bgcolor: 'primary.main',
+                        width: '80%',
+                        padding: '10px',
+                        textAlign: 'center',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        boxSizing: 'border-box',
+                        marginBottom: '20px',
+                    }}>
                     <Typography sx={{ color: 'white', fontWeight: 'bold' }}>Add Movie</Typography>
                 </Box>
             </Box>
