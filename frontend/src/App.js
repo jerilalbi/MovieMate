@@ -2,6 +2,7 @@ import { GenreProvider } from './context/GenreContext';
 import AddMovie from './pages/addMovie';
 import Home from './pages/home';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MovieDetails from './pages/movieDetails';
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/add-movie" element={<AddMovie />} />
+          <Route path="/movie-details" element={<MovieDetails />} />
         </Routes>
       </Router>
     </GenreProvider>

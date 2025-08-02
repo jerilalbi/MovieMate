@@ -25,7 +25,7 @@ function Header(props) {
     return (
         <AppBar position="absolute" elevation={0} sx={{ backgroundColor: 'transparent' }}>
             <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant="h6" sx={{ color: "primary.main", fontSize: "40px", fontWeight: "900" }}>MovieMate</Typography>
+                <Typography onClick={() => navigate('/')} variant="h6" sx={{ color: "primary.main", fontSize: "40px", fontWeight: "900", cursor: 'pointer' }}>MovieMate</Typography>
                 <Box sx={{ display: "flex" }}>
                     <Box
                         onClick={() => props.page === 'add-movie' ? navigate('/') : navigate('/add-movie')}
