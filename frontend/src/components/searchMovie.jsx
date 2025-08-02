@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { TextField, Box, List, ListItem, ListItemText, CircularProgress, MenuItem, FormControl, InputLabel, Select, Typography, } from '@mui/material';
+import { TextField, Box, List, ListItem, ListItemText, CircularProgress, MenuItem, FormControl, InputLabel, Select, Typography, Rating } from '@mui/material';
 import { getDirectorName, getStreamingServices, searchMovie } from '../services/tmdbApi';
 import SearchIcon from '@mui/icons-material/Search';
 import { useGenres } from '../context/GenreContext';
@@ -22,7 +22,6 @@ function SearchMovie() {
     const [completedDate, setCompletedDate] = useState('');
     const [rating, setRating] = useState(0);
     const [reviewText, setReviewText] = useState('');
-
 
     const handleSearch = async () => {
         if (!query.trim()) return;
@@ -366,13 +365,65 @@ function SearchMovie() {
 
                     )
                 }
-                <>
-                    <Typography sx={{ color: 'white', fontWeight: 'bold', mt: 3 }}>
-                        Add Review
-                    </Typography>
-
-                </>
-                <Box sx={{ mt: 3, bgcolor: 'primary.main', width: '80%', padding: '10px', textAlign: 'center', borderRadius: '8px', cursor: 'pointer', boxSizing: 'border-box' }}>
+                {selectedStatus === 'Completed' && (
+                    <>
+                        <Typography sx={{ color: 'white', fontWeight: 'bold', mt: 3 }}>
+                            Add Review
+                        </Typography>
+                        <Rating
+                            name="movie-rating"
+                            value={rating}
+                            onChange={(event, newValue) => {
+                                setRating(newValue);
+                            }}
+                            sx={{
+                                mt: 2, color: 'white',
+                                '& .MuiRating-iconEmpty': {
+                                    color: '#888888',
+                                },
+                            }}
+                            size="large"
+                        />
+                        <TextField
+                            label="Write your review"
+                            multiline
+                            rows={4}
+                            fullWidth
+                            sx={{
+                                mt: 3,
+                                width: '80%',
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: 'white',
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: 'red',
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: 'white',
+                                    },
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: 'gray',
+                                },
+                                input: { color: 'white', fontWeight: '600' }
+                            }}
+                            value={reviewText}
+                            onChange={(e) => setReviewText(e.target.value)}
+                        />
+                    </>
+                )}
+                <Box sx={{
+                    mt: 3,
+                    bgcolor: 'primary.main',
+                    width: '80%',
+                    padding: '10px',
+                    textAlign: 'center',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    boxSizing: 'border-box',
+                    marginBottom: '20px',
+                }}>
                     <Typography sx={{ color: 'white', fontWeight: 'bold' }}>Add Movie</Typography>
                 </Box>
             </Box>
