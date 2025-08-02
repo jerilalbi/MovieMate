@@ -8,4 +8,16 @@ export const getTrendingMovies = async () => await axios.get(`${baseURL}/trendin
 
 export const getGenreList = async () => await axios.get(`${baseURL}/genre/movie/list?api_key=${apiKey}&language=en-US`);
 
-export const searchMovie = async (searchTerm) => await axios.get(`${baseURL}/search/movie?api_key=${apiKey}&query=${searchTerm}`);
+export const searchMovie = async (searchTerm) => await axios.get(`${baseURL}/search/multi?api_key=${apiKey}&query=${searchTerm}`);
+
+export const getDirectorName = async (movieId, mediaType) => {
+    const response = await axios.get(`${baseURL}/${mediaType}/${movieId}/credits?api_key=${apiKey}`);
+    const director = response.data.crew.find(member => member.job === 'Director');
+    return director ? director.name : '';
+};
+
+export const getStreamingServices = async (movieId, mediaType) => {
+    const response = await axios.get(`${baseURL}/${mediaType}/${movieId}/watch/providers?api_key=${apiKey}`);
+    const providers = response.data.results?.['IN']?.flatrate || [];
+    return providers ? providers.map(provider => provider.provider_name).join(', ') : '';
+};
