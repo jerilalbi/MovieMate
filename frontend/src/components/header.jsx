@@ -63,8 +63,7 @@ function Header(props) {
                             }
                         }}
                     >
-                        <MenuItem>Watch Time</MenuItem>
-                        <MenuItem>Wishlist</MenuItem>
+                        <MenuItem onClick={() => navigate('/my-movies')}>My Movies</MenuItem>
                     </Menu>
                 </Box>
             </Toolbar>

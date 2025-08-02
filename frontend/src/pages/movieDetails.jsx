@@ -148,7 +148,7 @@ function MovieDetails() {
                                     color: 'gray',
                                 },
                                 '& .MuiInputBase-input.Mui-disabled': {
-                                    WebkitTextFillColor: '#000', // fixes text color for disabled mode if needed
+                                    WebkitTextFillColor: '#000',
                                 },
                                 input: { color: 'white', fontWeight: '600' }
                             }}
