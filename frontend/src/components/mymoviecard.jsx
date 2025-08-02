@@ -1,28 +1,45 @@
 import { Box, IconButton, Typography } from '@mui/material'
 import React from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from 'react-router-dom';
+import { deleteMovieDb } from '../services/movieApi';
 
 function MyMovieCard(props) {
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate('/movie-details', { state: props.movie })
+    }
+
+    const deleteMovie = async (event) => {
+        event.stopPropagation();
+        await deleteMovieDb(props.movie.id)
+        window.location.reload();
+    }
+
     return (
         <Box
-            // onClick={handleClick}
+            onClick={handleClick}
             sx={{
                 width: '200px',
                 height: '300px',
                 borderRadius: '10px',
                 position: 'relative',
                 bgcolor: 'grey.800',
-                backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent), url('https://image.tmdb.org/t/p/w440_and_h660_face/uPpmBjY3znUqGY8kYwI5xvOrSc0.jpg')`,
+                backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent), url('https://image.tmdb.org/t/p/w440_and_h660_face/${props.movie.posterImg}')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 flexShrink: 0,
                 cursor: 'pointer',
             }}>
-            <IconButton sx={{
-                position: 'absolute',
-                top: '10px',
-                right: '10px',
-            }}>
+            <IconButton
+                onClick={(event) => deleteMovie(event)}
+                sx={{
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px',
+                }}>
                 <DeleteIcon sx={{ color: 'red', fontSize: '30px', boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.4)' }} />
             </IconButton>
             <Typography sx={{
@@ -35,7 +52,7 @@ function MyMovieCard(props) {
                 fontWeight: '500',
                 textAlign: 'center',
             }}>
-                {props.title || 'Movie Title'}
+                {props.movie.title || 'Movie Title'}
             </Typography>
         </Box>
     )

@@ -11,39 +11,22 @@ import { useGenres } from '../context/GenreContext';
 
 function MovieCarousel() {
 
-    // const [movies, setMovies] = useState([]);
+    const [movies, setMovies] = useState([]);
     const { genreMap } = useGenres();
 
     useEffect(() => {
         const fetchTrending = async () => {
             try {
-                // const res = await getTrendingMovies();
-                // setMovies(res.data.results);
+                const res = await getTrendingMovies();
+                setMovies(res.data.results);
             } catch (err) {
                 console.error('Failed to fetch movies:', err);
             }
         };
 
-        // fetchTrending();
+        fetchTrending();
     }, []);
 
-    let movies = [{
-        "adult": false,
-        "backdrop_path": "/eU7IfdWq8KQy0oNd4kKXS0QUR08.jpg",
-        "id": 1061474,
-        "title": "Superman",
-        "original_title": "Superman",
-        "overview": "Superman, a journalist in Metropolis, embarks on a journey to reconcile his Kryptonian heritage with his human upbringing as Clark Kent.",
-        "poster_path": "/ombsmhYUqR4qqOLOxAyr5V8hbyv.jpg",
-        "media_type": "movie",
-        "original_language": "en",
-        "genre_ids": [878, 12, 28],
-        "popularity": 264.3187,
-        "release_date": "2025-07-09",
-        "video": false,
-        "vote_average": 7.424,
-        "vote_count": 1321
-    }]
 
     return (
         movies.length <= 0 ? (
@@ -116,25 +99,6 @@ function MovieCarousel() {
                                             <Typography sx={{ color: 'black', fontSize: '15px', fontWeight: '600', padding: '6px 12px' }}>{genreMap[genreId]}</Typography>
                                         </Box>
                                     ))}
-                                    <Box sx={{
-                                        width: '40px',
-                                        height: '40px',
-                                        borderRadius: '40px',
-                                        borderColor: 'white',
-                                        borderWidth: '2px',
-                                        borderStyle: 'solid',
-                                        marginLeft: '20px',
-                                        cursor: 'pointer',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        marginTop: '10px',
-                                        '&:hover': {
-                                            backgroundColor: 'rgba(255, 4, 4, 0.5)',
-                                        }
-                                    }}>
-                                        <FavoriteBorderIcon sx={{ color: 'white', fontSize: '20px', }} />
-                                    </Box>
                                 </Box>
                             </Box>
 

@@ -1,19 +1,21 @@
 import { Box } from '@mui/material'
 import React from 'react'
 
-function FilterBox(props) {
+function FilterBox({ title, onClick, active }) {
     return (
-        <Box sx={{
-            width: 'fit-content',
-            borderRadius: '10px',
-            bgcolor: 'grey.800',
-            display: 'flex',
-            alignItems: 'center',
-            color: 'white',
-            padding: '10px',
-            cursor: 'pointer',
-        }}>
-            {props.title}
+        <Box
+            onClick={onClick}
+            sx={{
+                width: 'fit-content',
+                borderRadius: '10px',
+                bgcolor: title === active ? 'primary.main' : 'grey',
+                display: 'flex',
+                alignItems: 'center',
+                color: 'white',
+                padding: '10px',
+                cursor: 'pointer',
+            }}>
+            {title}
         </Box>
     )
 }

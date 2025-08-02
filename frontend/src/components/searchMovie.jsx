@@ -3,6 +3,7 @@ import { TextField, Box, List, ListItem, ListItemText, CircularProgress, MenuIte
 import { getDirectorName, getStreamingServices, searchMovie } from '../services/tmdbApi';
 import SearchIcon from '@mui/icons-material/Search';
 import { useGenres } from '../context/GenreContext';
+import { addMovietoDB } from '../services/movieApi';
 
 function SearchMovie() {
 
@@ -55,6 +56,41 @@ function SearchMovie() {
 
     const handleCompletedDate = (event) => {
         setCompletedDate(event.target.value);
+    }
+
+    const addMovie = async () => {
+        const finalData = {
+            title: query,
+            overview: selectedMovie.overview,
+            director: director,
+            media_type: mediaType,
+            genre: genre,
+            rating: rating,
+            review: reviewText,
+            completed_date: completedDate === "" ? null : completedDate,
+            completedSeason: seasonCompleted,
+            completedEpisode: episodeCompleted,
+            status: selectedStatus,
+            bgImg: selectedMovie.backdrop_path || "",
+            posterImg: selectedMovie.poster_path || ""
+        }
+        console.log(finalData);
+        const isDataAdded = await addMovietoDB(finalData);
+        if (isDataAdded) {
+            setSelectedMovie(null);
+            setMediaType('movie');
+            setResults([]);
+            setDirector('');
+            setPlatform('');
+            setQuery('');
+            setGenre('');
+            setSelectedStatus('');
+            setCompletedDate('');
+            setRating(0);
+            setReviewText('');
+            setSelectedStatus('');
+            setCompletedDate('');
+        }
     }
 
     useEffect(() => {
@@ -406,6 +442,10 @@ function SearchMovie() {
                                 '& .MuiInputLabel-root': {
                                     color: 'gray',
                                 },
+                                '& .MuiInputBase-input': {
+                                    color: 'white',
+                                    fontWeight: '600',
+                                },
                                 input: { color: 'white', fontWeight: '600' }
                             }}
                             value={reviewText}
@@ -413,25 +453,27 @@ function SearchMovie() {
                         />
                     </>
                 )}
-                <Box sx={{
-                    mt: 3,
-                    bgcolor: 'primary.main',
-                    width: '80%',
-                    padding: '10px',
-                    textAlign: 'center',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    boxSizing: 'border-box',
-                    marginBottom: '20px',
-                }}>
+                <Box
+                    onClick={addMovie}
+                    sx={{
+                        mt: 3,
+                        bgcolor: 'primary.main',
+                        width: '80%',
+                        padding: '10px',
+                        textAlign: 'center',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        boxSizing: 'border-box',
+                        marginBottom: '20px',
+                    }}>
                     <Typography sx={{ color: 'white', fontWeight: 'bold' }}>Add Movie</Typography>
                 </Box>
             </Box>
             <Box sx={{ width: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Box
                     sx={{
-                        width: '40%',
-                        height: '350px',
+                        width: '50%',
+                        height: '70%',
                         bgcolor: 'grey',
                         backgroundImage: selectedMovie && `url(https://image.tmdb.org/t/p/w500${selectedMovie.poster_path})`,
                         backgroundSize: 'cover',

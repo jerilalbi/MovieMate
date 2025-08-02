@@ -9,15 +9,7 @@ function MovieCard(props) {
 
     const handleClick = () => {
         navigate('/movie-details', {
-            state: {
-                movie: {
-                    title: 'Premalu',
-                    overview: 'A gripping tale of love and sacrifice.',
-                    genre_ids: [28, 12],
-                    backdrop_path: 'myEc374uFZlEvab1Y0to3EnkENN.jpg',
-                    poster_path: 'uPpmBjY3znUqGY8kYwI5xvOrSc0.jpg',
-                },
-            }
+            state: props.movie
         });
     };
 
@@ -30,7 +22,7 @@ function MovieCard(props) {
                 borderRadius: '10px',
                 position: 'relative',
                 bgcolor: 'grey.800',
-                backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent), url('${props.image}')`,
+                backgroundImage: `linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent), url('https://media.themoviedb.org/t/p/w440_and_h660_face/${props.movie.posterImg}')`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 flexShrink: 0,
@@ -46,7 +38,7 @@ function MovieCard(props) {
                 fontWeight: '500',
                 textAlign: 'center',
             }}>
-                {props.title || 'Movie Title'}
+                {props.movie.title || 'Movie Title'}
             </Typography>
         </Box>
     )

@@ -3,14 +3,11 @@ import React from 'react'
 import Header from '../components/header'
 import { imageBaseURL } from '../services/tmdbApi'
 import { useLocation } from 'react-router-dom'
-import { useGenres } from '../context/GenreContext'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import EditIcon from '@mui/icons-material/Edit';
 
 function MovieDetails() {
     const location = useLocation();
-    const movie = location.state?.movie || {};
-    const { genreMap } = useGenres();
+    const movie = location.state || {};
 
     return (
         <Container disableGutters maxWidth="false">
@@ -25,7 +22,7 @@ function MovieDetails() {
                     overflow: 'hidden',
                     alignItems: 'center',
                     color: 'white',
-                    backgroundImage: `url('${imageBaseURL}/${movie.backdrop_path}')`,
+                    backgroundImage: `url('${imageBaseURL}/${movie.bgImg}')`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     transition: 'background-image 0.8s ease-in-out',
@@ -49,13 +46,13 @@ function MovieDetails() {
                     }}>
                         <Box sx={{ width: '700px' }}>
                             <Typography sx={{ fontSize: '70px', fontWeight: '900', lineHeight: '1' }}>{movie.title}</Typography>
-                            <Typography sx={{ fontSize: '17px', fontWeight: '500', lineHeight: '1.2', color: 'white' }}>{movie.overview}</Typography>
+                            <Typography sx={{ fontSize: '17px', fontWeight: '500', lineHeight: '1.2', color: 'white' }}>{movie.overview || ''}</Typography>
                         </Box>
                     </Box>
                     <Box sx={{
                         display: 'flex',
                     }}>
-                        {movie.genre_ids.map((genreId) => (
+                        {movie.genre.split(',').map((genreName) => (
                             <Box sx={{
                                 display: 'flex',
                                 height: '40px',
@@ -67,45 +64,27 @@ function MovieDetails() {
                                 marginTop: '10px',
                                 marginRight: '8px',
                             }}>
-                                <Typography sx={{ color: 'black', fontSize: '15px', fontWeight: '600', padding: '6px 12px' }}>{genreMap[genreId]}</Typography>
+                                <Typography sx={{ color: 'black', fontSize: '15px', fontWeight: '600', padding: '6px 12px' }}>{genreName}</Typography>
                             </Box>
                         ))}
-                        <Box sx={{
-                            width: '40px',
-                            height: '40px',
-                            borderRadius: '40px',
-                            borderColor: 'white',
-                            borderWidth: '2px',
-                            borderStyle: 'solid',
-                            marginLeft: '20px',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginTop: '10px',
-                            '&:hover': {
-                                backgroundColor: 'rgba(255, 4, 4, 0.5)',
-                            }
-                        }}>
-                            <FavoriteBorderIcon sx={{ color: 'white', fontSize: '20px', }} />
-                        </Box>
+
                     </Box>
-                    <Box sx={{
-                        mt: '10px',
-                        width: '400px',
-                        bgcolor: 'rgba(240, 240, 240, 0.2)',
-                        borderRadius: '10px',
-                        padding: '10px',
-                    }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Box>
+                    {
+                        movie.review !== '' && (
+                            <Box sx={{
+                                mt: '20px',
+                                width: '400px',
+                                bgcolor: 'rgba(240, 240, 240, 0.2)',
+                                borderRadius: '10px',
+                                padding: '10px',
+                            }}>
                                 <Typography sx={{ fontSize: '20px', fontWeight: '900', color: 'white' }}>
                                     Your Review
                                 </Typography>
                                 <Rating
                                     readOnly
                                     name="movie-rating"
-                                    value={4}
+                                    value={movie.rating}
                                     sx={{
                                         mt: 2, color: 'white',
                                         '& .MuiRating-iconEmpty': {
@@ -114,48 +93,21 @@ function MovieDetails() {
                                     }}
                                     size="large"
                                 />
+                                <Typography sx={{ fontSize: '16px', fontWeight: '800' }}>
+                                    {movie.review}
+                                </Typography>
                             </Box>
-                            <IconButton>
-                                <EditIcon sx={{ color: 'white', fontSize: '30px', marginLeft: 'auto' }} />
-                            </IconButton>
-                        </Box>
-                        <TextField
-                            multiline
-                            rows={4}
-                            fullWidth
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                            sx={{
-                                mt: 3,
-                                width: '80%',
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: 'white',
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: 'red',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: 'white',
-                                    },
-                                },
-                                '& .MuiInputBase-input': {
-                                    color: 'white',
-                                    fontWeight: '600',
-                                },
-                                '& .MuiInputLabel-root': {
-                                    color: 'gray',
-                                },
-                                '& .MuiInputBase-input.Mui-disabled': {
-                                    WebkitTextFillColor: '#000',
-                                },
-                                input: { color: 'white', fontWeight: '600' }
-                            }}
-                            value={'good film romantic and comedy higly recommended'}
-                        // onChange={(e) => setReviewText(e.target.value)}
-                        />
-                    </Box>
+                        )
+                    }
+                    {
+                        (movie.media_type === 'tv' && movie.status === 'Watching') && (
+                            <>
+                                <Typography sx={{ color: 'white', fontWeight: '600', mt: '20px' }}>
+                                    Watching:  Season - {movie.completedSeason} | Eposide - {movie.completedEpisode}
+                                </Typography>
+                            </>
+                        )
+                    }
                 </Box>
                 <Box sx={{
                     height: '500px',
@@ -163,7 +115,7 @@ function MovieDetails() {
                     bgcolor: 'grey.800',
                     borderRadius: '10px',
                     marginRight: '24px',
-                    backgroundImage: `url('https://image.tmdb.org/t/p/w440_and_h660_face/${movie.poster_path}')`,
+                    backgroundImage: `url('https://image.tmdb.org/t/p/w440_and_h660_face${movie.posterImg}')`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}>
